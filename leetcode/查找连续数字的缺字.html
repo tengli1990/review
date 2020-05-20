@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  一个长度 为 n-1的递增排序数组中所有的数字都是唯一的，并且每个数字都在范围0 ～ n-1 之间，其中只有一个数字不再该数组中 请找出这个数字
+  1、递归算法
+  <script>
+    var arr = []
+    for(let i=0;i<=1000;i++){
+      if(i === 0) continue
+      arr.push(i)
+    }
+    var findGap = function(nums){
+      if(!Array.isArray(nums)){
+        return nums 
+      }
+      const len = nums.length
+      const ceilNum = Math.ceil(len/2)
+      const right = nums.splice(ceilNum)
+      const left = nums
+      if(right[0] - left[nums.length-1] === 1){
+        let leftResult = findGap(left)
+        let rightResult = findGap(right)
+       if(leftResult){
+         return leftResult
+       }
+       if(rightResult){
+         return rightResult
+       }
+      }else{
+        return findGap(right[0]-1)
+      }
+    }
+    const time1 = Date.now()
+    console.log('中间缺少了'+findGap(arr))
+    const time2 = Date.now()
+    console.log(time2 - time1+'ms')
+
+  </script>
+</body>
+</html>

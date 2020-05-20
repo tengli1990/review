@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var arr = [0,0,'A',2,3,4,5,6,7,8,9,10,'J','Q','K']
+    var poker = []
+    for(var i=0;i<5;i++){
+      poker.push(Math.round(Math.random() * (arr.length-1)))
+    }
+       // 字母转换
+      const replaceHelper = function(num){
+         const strPos = ['A','J','Q','K']
+         const numPos = [1,11,12,13]
+         if(strPos.includes(num)){
+           return numPos[strPos.indexOf(num)]
+         }
+         if(numPos.includes(num)){
+           return strPos[numPos.indexOf(num)]
+         }
+         return num
+      }
+    
+    var checkContinuous = function(pokers){
+      let len = pokers.length
+   
+      pokers.sort((a,b)=>a-b)
+      let n = 0
+      let zeroCount = 0
+      for(let i=0;i<len;i++){
+        if(replaceHelper(pokers[i]) ===0){
+          zeroCount++
+          len++
+          continue
+        }
+        // 记数开始
+        if(n === 0){
+          n = replaceHelper(pokers[i])
+          continue
+        }
+        const idx = pokers.indexOf(replaceHelper(n+1))
+        // 找得到直接替换n为当前值
+        if(idx !== -1){
+          n = replaceHelper(pokers[idx])
+        }else{
+          // 下一个数没找到 再判断是否有 joker
+          if(zeroCount){
+            // 有joker 则将n的值替换为下一个数的值
+            n= n+1
+            zeroCount--
+          }else{
+            return false
+          }
+        }
+      }
+      return true
+    }
+    pokers = [0,8,9,'J','Q','K']
+    console.log(checkContinuous(pokers))
+    
+  </script>
+</body>
+</html>
